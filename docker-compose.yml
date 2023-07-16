@@ -1,0 +1,37 @@
+version: "3.9"
+services:
+  ssh:
+    build:
+      context: ./services/ssh
+      dockerfile: ssh.Dockerfile
+    volumes:
+      - ./ssh/ssh-keys:/home/moderator/.ssh
+    environment:
+      - DATABASE_URL="postgres://weekly:AjE7ruewhrvYQ7avwbWqPoAB@db:5432/weekly-news"
+    ports:
+      - "222:22"
+
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: weekly
+      POSTGRES_PASSWORD: AjE7ruewhrvYQ7avwbWqPoAB
+      POSTGRES_DB: weekly-news
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "54321:5432"
+
+  www:
+    build:
+      context: ./services/www
+      dockerfile: www.Dockerfile
+    volumes:
+      - ./www:/var/www/html
+    ports:
+      - "80:80"
+
+volumes:
+  db_data: {}
+  # ssh_data: {}
+  www_data: {}
