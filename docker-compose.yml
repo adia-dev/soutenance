@@ -29,7 +29,8 @@ services:
     volumes:
       - ./www:/var/www/html
     ports:
-      - "80:80"
+      - "8081:80"
+      - "9090:9000"
 
 volumes:
   db_data: {}
